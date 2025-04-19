@@ -1,0 +1,15 @@
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\service\UserService.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\config\GlobalExceptionHandler.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\BackendApplication.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\controller\AuthController.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\model\dto\AuthResponse.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\model\User.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\controller\UserController.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\security\UserDetailsServiceImpl.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\config\SecurityConfig.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\security\JwtUtils.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\security\JwtAuthenticationFilter.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\service\AuthService.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\model\dto\RegisterRequest.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\repository\UserRepository.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\model\dto\LoginRequest.java

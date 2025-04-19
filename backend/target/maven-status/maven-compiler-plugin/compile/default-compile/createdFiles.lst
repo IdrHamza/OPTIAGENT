@@ -1,0 +1,16 @@
+com\optiagent\backend\model\dto\RegisterRequest.class
+com\optiagent\backend\security\JwtUtils.class
+com\optiagent\backend\config\SecurityConfig.class
+com\optiagent\backend\model\User.class
+com\optiagent\backend\controller\UserController.class
+com\optiagent\backend\model\dto\AuthResponse$AuthResponseBuilder.class
+com\optiagent\backend\model\dto\AuthResponse.class
+com\optiagent\backend\model\dto\LoginRequest.class
+com\optiagent\backend\config\GlobalExceptionHandler.class
+com\optiagent\backend\security\UserDetailsServiceImpl.class
+com\optiagent\backend\controller\AuthController.class
+com\optiagent\backend\service\UserService.class
+com\optiagent\backend\repository\UserRepository.class
+com\optiagent\backend\service\AuthService.class
+com\optiagent\backend\security\JwtAuthenticationFilter.class
+com\optiagent\backend\BackendApplication.class
