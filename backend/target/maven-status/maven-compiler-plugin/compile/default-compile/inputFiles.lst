@@ -1,6 +1,7 @@
 C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\service\UserService.java
 C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\config\GlobalExceptionHandler.java
 C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\BackendApplication.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\model\dto\ProfileUpdateRequest.java
 C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\controller\AuthController.java
 C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\model\dto\AuthResponse.java
 C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\model\User.java
@@ -13,3 +14,4 @@ C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\bac
 C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\model\dto\RegisterRequest.java
 C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\repository\UserRepository.java
 C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\model\dto\LoginRequest.java
+C:\Users\anoir\OneDrive\Bureau\ProjetPfa\backend\src\main\java\com\optiagent\backend\model\dto\PasswordChangeRequest.java

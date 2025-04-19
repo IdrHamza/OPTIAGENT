@@ -46,9 +46,11 @@ import {
   EyeOff,
   Check,
   XCircle,
-  AlertTriangle
+  AlertTriangle,
+  Loader2
 } from "lucide-react"
 import { getUser, updateUser, clearUser } from "@/lib/user-store"
+import { userApi } from "@/lib/api-service"
 import Link from "next/link"
 
 export default function ProfilePage() {
@@ -59,6 +61,7 @@ export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
   const [message, setMessage] = useState({ type: "", text: "" })
+  const [isLoading, setIsLoading] = useState(false)
   
   // Password change fields
   const [currentPassword, setCurrentPassword] = useState("")
@@ -66,9 +69,11 @@ export default function ProfilePage() {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [passwordMessage, setPasswordMessage] = useState({ type: "", text: "" })
+  const [isPasswordLoading, setIsPasswordLoading] = useState(false)
   
   // Delete account fields
   const [confirmDelete, setConfirmDelete] = useState("")
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false)
   
   useEffect(() => {
     const userData = getUser()
@@ -122,65 +127,74 @@ export default function ProfilePage() {
   const handleSubmitProfile = async (e) => {
     e.preventDefault()
     setMessage({ type: "", text: "" })
+    setIsLoading(true)
     
     if (!name.trim()) {
       setMessage({ type: "error", text: "Le nom est requis" })
+      setIsLoading(false)
       return
     }
     
     try {
-      // Update user data
-      const updatedUser = updateUser({
+      // Préparer les données pour l'API
+      const profileData = {
         name,
         profileImage: imagePreview
+      }
+      
+      // Appel à l'API pour mettre à jour le profil
+      const updatedUser = await userApi.updateProfile(profileData)
+      
+      // Mettre à jour le stockage local
+      const localUpdatedUser = updateUser({
+        name: updatedUser.name,
+        profileImage: updatedUser.profileImage
       })
       
-      setUser(updatedUser)
+      setUser(localUpdatedUser)
       setMessage({ type: "success", text: "Profil mis à jour avec succès" })
     } catch (error) {
       console.error("Error updating profile:", error)
-      setMessage({ type: "error", text: "Une erreur est survenue. Veuillez réessayer." })
+      setMessage({ type: "error", text: error.message || "Une erreur est survenue. Veuillez réessayer." })
+    } finally {
+      setIsLoading(false)
     }
   }
   
-  const handleChangePassword = (e) => {
+  const handleChangePassword = async (e) => {
     e.preventDefault()
     setPasswordMessage({ type: "", text: "" })
+    setIsPasswordLoading(true)
     
     // Validation
     if (!currentPassword || !newPassword || !confirmPassword) {
       setPasswordMessage({ type: "error", text: "Tous les champs sont requis" })
+      setIsPasswordLoading(false)
       return
     }
     
     if (newPassword !== confirmPassword) {
       setPasswordMessage({ type: "error", text: "Les mots de passe ne correspondent pas" })
+      setIsPasswordLoading(false)
       return
     }
     
     if (newPassword.length < 8) {
       setPasswordMessage({ type: "error", text: "Le mot de passe doit contenir au moins 8 caractères" })
+      setIsPasswordLoading(false)
       return
     }
     
     try {
-      // Get the stored users
-      const users = JSON.parse(localStorage.getItem("users") || "[]")
-      const userIndex = users.findIndex(u => u.email === email)
-      
-      if (userIndex === -1) {
-        setPasswordMessage({ type: "error", text: "Utilisateur non trouvé" })
-        return
+      // Préparer les données pour l'API
+      const passwordData = {
+        currentPassword,
+        newPassword,
+        confirmPassword
       }
       
-      if (users[userIndex].password !== currentPassword) {
-        setPasswordMessage({ type: "error", text: "Mot de passe actuel incorrect" })
-        return
-      }
-      
-      // Update the password
-      users[userIndex].password = newPassword
-      localStorage.setItem("users", JSON.stringify(users))
+      // Appel à l'API pour changer le mot de passe
+      await userApi.changePassword(passwordData)
       
       // Clear fields
       setCurrentPassword("")
@@ -190,27 +204,30 @@ export default function ProfilePage() {
       setPasswordMessage({ type: "success", text: "Mot de passe modifié avec succès" })
     } catch (error) {
       console.error("Error changing password:", error)
-      setPasswordMessage({ type: "error", text: "Une erreur est survenue. Veuillez réessayer." })
+      setPasswordMessage({ type: "error", text: error.message || "Une erreur est survenue. Veuillez réessayer." })
+    } finally {
+      setIsPasswordLoading(false)
     }
   }
   
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
+    setIsDeleteLoading(true)
+    
     try {
-      // Get the stored users
-      const users = JSON.parse(localStorage.getItem("users") || "[]")
-      const updatedUsers = users.filter(u => u.email !== email)
+      // Appel à l'API pour supprimer le compte
+      await userApi.deleteAccount()
       
-      // Update localStorage
-      localStorage.setItem("users", JSON.stringify(updatedUsers))
-      
-      // Remove authentication
+      // Supprimer les données locales
       localStorage.removeItem("isAuthenticated")
       clearUser()
       
-      // Redirect to login
+      // Rediriger vers la page de connexion
       router.push("/")
     } catch (error) {
       console.error("Error deleting account:", error)
+      alert(error.message || "Une erreur est survenue lors de la suppression du compte.")
+    } finally {
+      setIsDeleteLoading(false)
     }
   }
   
@@ -331,8 +348,15 @@ export default function ProfilePage() {
                 )}
                 
                 <div className="flex justify-end">
-                  <Button type="submit">
-                    Enregistrer les modifications
+                  <Button type="submit" disabled={isLoading}>
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Enregistrement...
+                      </>
+                    ) : (
+                      "Enregistrer les modifications"
+                    )}
                   </Button>
                 </div>
               </form>
@@ -354,56 +378,47 @@ export default function ProfilePage() {
                 <div className="space-y-2">
                   <Label htmlFor="current-password">Mot de passe actuel</Label>
                   <div className="relative">
-                    <Input
-                      id="current-password"
+                    <Input 
+                      id="current-password" 
                       type={showPassword ? "text" : "password"}
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
-                      placeholder="Entrez votre mot de passe actuel"
+                      placeholder="Entrez votre mot de passe actuel" 
                     />
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                      onClick={() => setShowPassword(!showPassword)}
+                    <button 
                       type="button"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                      onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-muted-foreground" />
+                        <EyeOff className="h-4 w-4" />
                       ) : (
-                        <Eye className="h-4 w-4 text-muted-foreground" />
+                        <Eye className="h-4 w-4" />
                       )}
-                    </Button>
+                    </button>
                   </div>
                 </div>
                 
                 <div className="space-y-2">
                   <Label htmlFor="new-password">Nouveau mot de passe</Label>
-                  <div className="relative">
-                    <Input
-                      id="new-password"
-                      type={showPassword ? "text" : "password"}
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      placeholder="Nouveau mot de passe"
-                    />
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Le mot de passe doit contenir au moins 8 caractères
-                  </p>
+                  <Input 
+                    id="new-password" 
+                    type={showPassword ? "text" : "password"}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Entrez votre nouveau mot de passe" 
+                  />
                 </div>
                 
                 <div className="space-y-2">
                   <Label htmlFor="confirm-password">Confirmer le mot de passe</Label>
-                  <div className="relative">
-                    <Input
-                      id="confirm-password"
-                      type={showPassword ? "text" : "password"}
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="Confirmez le nouveau mot de passe"
-                    />
-                  </div>
+                  <Input 
+                    id="confirm-password" 
+                    type={showPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirmez votre nouveau mot de passe" 
+                  />
                 </div>
                 
                 {passwordMessage.text && (
@@ -425,9 +440,16 @@ export default function ProfilePage() {
                   </div>
                 )}
                 
-                <div className="mt-4 flex justify-end">
-                  <Button type="submit" className="mt-2">
-                    Changer le mot de passe
+                <div className="flex justify-end">
+                  <Button type="submit" disabled={isPasswordLoading}>
+                    {isPasswordLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Modification...
+                      </>
+                    ) : (
+                      "Modifier le mot de passe"
+                    )}
                   </Button>
                 </div>
               </form>
@@ -436,89 +458,98 @@ export default function ProfilePage() {
           
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl flex items-center text-destructive">
-                <LockKeyhole className="h-5 w-5 mr-2" />
-                Sessions actives
-              </CardTitle>
+              <CardTitle className="text-xl text-destructive">Supprimer le compte</CardTitle>
               <CardDescription>
-                Gérez vos sessions de connexion actives
+                Supprimez définitivement votre compte et toutes vos données
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="p-4 border rounded-md">
-                <div className="flex items-center justify-between">
+              <div className="bg-destructive/10 border border-destructive/20 rounded-md p-4 mb-4">
+                <div className="flex items-start">
+                  <AlertTriangle className="h-5 w-5 text-destructive mr-3 mt-0.5" />
                   <div>
-                    <p className="font-medium">Session actuelle</p>
-                    <p className="text-sm text-muted-foreground">
-                      Navigateur: {window.navigator.userAgent.split(' ').slice(-1)[0].split('/')[0]}
+                    <h4 className="font-medium text-destructive">Attention : Action irréversible</h4>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      La suppression de votre compte est définitive et toutes vos données seront perdues.
+                      Cette action ne peut pas être annulée.
                     </p>
                   </div>
-                  <Button variant="outline">
-                    Actif
-                  </Button>
                 </div>
               </div>
+              
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" className="w-full">
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Supprimer mon compte
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Êtes-vous sûr de vouloir supprimer votre compte ?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Cette action est irréversible. Toutes vos données seront définitivement supprimées.
+                      <div className="mt-4">
+                        <Label htmlFor="confirm-delete">Pour confirmer, tapez "SUPPRIMER" ci-dessous :</Label>
+                        <Input 
+                          id="confirm-delete"
+                          className="mt-2"
+                          value={confirmDelete}
+                          onChange={(e) => setConfirmDelete(e.target.value)}
+                        />
+                      </div>
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel onClick={() => setConfirmDelete("")}>Annuler</AlertDialogCancel>
+                    <AlertDialogAction 
+                      onClick={handleDeleteAccount}
+                      disabled={confirmDelete !== "SUPPRIMER" || isDeleteLoading}
+                      className="bg-destructive hover:bg-destructive/90"
+                    >
+                      {isDeleteLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Suppression...
+                        </>
+                      ) : (
+                        "Supprimer définitivement"
+                      )}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </CardContent>
           </Card>
         </TabsContent>
         
-        {/* Onglet Avancé */}
+        {/* Onglet Paramètres avancés */}
         <TabsContent value="advanced">
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl text-destructive flex items-center">
-                <AlertTriangle className="h-5 w-5 mr-2" />
-                Supprimer le compte
-              </CardTitle>
+              <CardTitle className="text-xl">Paramètres avancés</CardTitle>
               <CardDescription>
-                Cette action est permanente et irréversible
+                Configurez les paramètres avancés de votre compte
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
               <div className="space-y-4">
-                <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-md">
-                  <p className="text-sm text-destructive">
-                    La suppression de votre compte est une action permanente et irréversible. 
-                    Toutes vos données, y compris vos agents et leur historique, seront définitivement perdues.
-                  </p>
-                </div>
-                
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="destructive">
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      Supprimer mon compte
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Êtes-vous absolument sûr ?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Cette action est permanente et ne peut pas être annulée. Toutes vos données seront définitivement supprimées.
-                        <div className="mt-4">
-                          <Label htmlFor="confirm-delete">Pour confirmer, tapez "supprimer"</Label>
-                          <Input 
-                            id="confirm-delete"
-                            value={confirmDelete}
-                            onChange={(e) => setConfirmDelete(e.target.value)}
-                            className="mt-2"
-                            placeholder="supprimer"
-                          />
-                        </div>
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Annuler</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={handleDeleteAccount}
-                        disabled={confirmDelete !== "supprimer"}
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                      >
-                        Supprimer définitivement
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                <h3 className="font-medium">Notifications</h3>
+                <Separator />
+                <p className="text-sm text-muted-foreground">
+                  Les paramètres de notification seront disponibles dans une prochaine mise à jour.
+                </p>
+              </div>
+              
+              <div className="space-y-4 mt-6">
+                <h3 className="font-medium">Exportation des données</h3>
+                <Separator />
+                <p className="text-sm text-muted-foreground mb-2">
+                  Téléchargez une copie de vos données personnelles.
+                </p>
+                <Button variant="outline">
+                  Exporter mes données
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -526,4 +557,4 @@ export default function ProfilePage() {
       </Tabs>
     </div>
   )
-} 
+}
