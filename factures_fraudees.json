@@ -1,0 +1,59 @@
+[
+    {
+        "nom_fichier": "189b96a2-ebe3-43e2-ae3d-f310e67fe8c2.pdf (page 1)",
+        "Nom du commerce": "Hôtel du Mont-Blanc",
+        "Date de la facture": "inconnu",
+        "Montant total": 300.0,
+        "Ville": "PARIS",
+        "Adresse complète": "28, rue de la Huchette - 75005 PARIS",
+        "fraude": "Oui",
+        "raison": [
+            "La date de la facture est manquante, ce qui constitue une information manquante et rend la facture suspecte.",
+            "La ville de la facture (Paris) n'est pas cohérente avec la destination de la mission (Brazzaville).",
+            "Il est peu probable qu'une dépense de 300€ dans un hôtel à Paris soit une dépense professionnelle liée à une mission à Brazzaville."
+        ]
+    },
+    {
+        "nom_fichier": "617a392d-c2d4-4f76-889f-6d38afc10e80.jpg",
+        "Nom du commerce": "AUX 500 DIABLES",
+        "Date de la facture": "2017-07-29",
+        "Montant total": 132.5,
+        "Ville": "CHAMBON SUR LAC",
+        "Adresse complète": "CHAMBON DES NEIGES 1200 M\n63790 CHAMBON SUR LAC",
+        "fraude": "Oui",
+        "raison": [
+            "La date de la facture (2017-07-29) est antérieure à la date de la mission (2020-05-27).",
+            "La ville sur la facture (Chambon sur Lac) est incohérente avec la destination de la mission (Brazzaville). Il n'y a pas de proximité géographique.",
+            "Le type de commerce ('Aux 500 Diables') ne fournit pas d'indication claire sur la nature des dépenses professionnelles.  Son nom ne suggère pas une dépense liée à un voyage d'affaires à Brazzaville."
+        ]
+    },
+    {
+        "nom_fichier": "8d46ec56-f729-40e2-a36e-3acce0eedff4.jpg",
+        "Nom du commerce": "RESTAURANT L'ARLEQUIN",
+        "Date de la facture": "2016-07-31",
+        "Montant total": 86.4,
+        "Ville": "Louhans",
+        "Adresse complète": "5, Place de la Libération 71500 Louhans",
+        "fraude": "Oui",
+        "raison": [
+            "La date de la facture (2016-07-31) est antérieure à la date de la mission (2020-05-27) de plus de trois ans.",
+            "La ville de la facture (Louhans) est incompatible avec la destination de la mission (Brazzaville).  Il n'y a aucun lien géographique.",
+            "Il est peu probable qu'un restaurant à Louhans soit une dépense légitime dans le cadre d'une mission à Brazzaville."
+        ]
+    },
+    {
+        "nom_fichier": "95c06c3e-98f7-42de-bafa-9cc924206bc4.png",
+        "Nom du commerce": "inconnu",
+        "Date de la facture": "2021-10-14",
+        "Montant total": 2638.24,
+        "Ville": "inconnu",
+        "Adresse complète": "inconnu",
+        "fraude": "Oui",
+        "raison": [
+            "Informations manquantes : Ville, Nom du commerce, Adresse.",
+            "Incohérence temporelle : La date de la facture (2021-10-14) est bien après la période de la mission (2020-05-27 à 2020-05-31).",
+            "Absence d'information sur le type de commerce, rendant impossible l'évaluation de la cohérence du montant et de la nature de la dépense.",
+            "Le montant, bien que numériquement cohérent, ne peut être qualifié de raisonnable sans connaître le type de commerce."
+        ]
+    }
+]

@@ -1,59 +1,42 @@
 from fastapi import APIRouter, UploadFile, File
 from fastapi.responses import JSONResponse
-import os
-import shutil
-from uuid import uuid4
 from typing import List
-from app_1 import graph  
+import tempfile
+import os
+from uuid import uuid4
+
+from app import graph
 from state import FactureProcessingState
 
 router = APIRouter()
-
-# Définir les dossiers
-FACTURES_DIR = "factures"
-ORDRES_DIR = "ordre_mission"
-
-# Créer les dossiers s'ils n'existent pas
-os.makedirs(FACTURES_DIR, exist_ok=True)
-os.makedirs(ORDRES_DIR, exist_ok=True)
-
-def clean_directory(path):
-    for f in os.listdir(path):
-        os.remove(os.path.join(path, f))
 
 @router.post("/detecter_fraude/")
 async def detecter_fraude(
     factures: List[UploadFile] = File(...),
     ordre_mission: List[UploadFile] = File(...)
 ):
-    # Nettoyer les anciens fichiers
-    clean_directory(FACTURES_DIR)
-    clean_directory(ORDRES_DIR)
+    with tempfile.TemporaryDirectory() as factures_dir, tempfile.TemporaryDirectory() as ordres_dir:
 
-    # Sauvegarder les nouvelles factures
-    for facture in factures:
-        extension = os.path.splitext(facture.filename)[-1]
-        dest = os.path.join(FACTURES_DIR, f"{uuid4()}{extension}")
-        with open(dest, "wb") as f:
-            f.write(await facture.read())
+        for facture in factures:
+            extension = os.path.splitext(facture.filename)[-1]
+            path = os.path.join(factures_dir, f"{uuid4()}{extension}")
+            with open(path, "wb") as f:
+                f.write(await facture.read())
 
-    # Sauvegarder le ou les ordres de mission
-    for ordre in ordre_mission:
-        extension = os.path.splitext(ordre.filename)[-1]
-        dest = os.path.join(ORDRES_DIR, f"{uuid4()}{extension}")
-        with open(dest, "wb") as f:
-            f.write(await ordre.read())
+        for ordre in ordre_mission:
+            extension = os.path.splitext(ordre.filename)[-1]
+            path = os.path.join(ordres_dir, f"{uuid4()}{extension}")
+            with open(path, "wb") as f:
+                f.write(await ordre.read())
 
-    # Lancer l'agent avec les bons chemins
-    state_init = FactureProcessingState(
-        dossier_factures=FACTURES_DIR,
-        dossier_ordres=ORDRES_DIR
-    )
-    
-    result = graph.invoke(state_init)
+        state_init = FactureProcessingState(
+            dossier_factures=factures_dir,
+            dossier_ordres=ordres_dir
+        )
+        result = graph.invoke(state_init)
 
-    return JSONResponse(content={"résultats": result.resultats_fraude})
+    return JSONResponse(content={"résultats": result["resultats_fraude"]})
 
 @router.get("/")
 def home():
-    return {"message": "Bienvenue dans l'API de détection de fraude RPA !"}
+    return("Message: Bienvenue")
