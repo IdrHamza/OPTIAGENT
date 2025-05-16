@@ -1,0 +1,11 @@
+{
+    "dockerfile_lines": [],
+    "graphs": {
+      "ollama_deep_researcher": "./my_agent/app.py:graph"
+    },
+    "python_version": "3.12",
+    "env": ".env",
+    "dependencies": [
+      "./my_agent"
+    ]
+  }

@@ -1,0 +1,72 @@
+[
+    {
+        "nom_fichier": "00f63111-a3c5-490d-a1ff-9c0ce7b5cc30.jpeg",
+        "Nom du commerce": "inconnu",
+        "Date de la facture": "2025-05-17",
+        "Montant total": 300,
+        "Ville": "Rabat",
+        "Adresse complète": "3 Rue Chellah, Rabat",
+        "fraude": "Oui",
+        "raison": [
+            "La ville sur la facture (Rabat) est différente de la ville de destination de la mission (Casablanca).  Bien qu'elles soient relativement proches, cela représente une incohérence.",
+            "La date de la facture (2025-05-17) est bien comprise dans l'intervalle de la mission (2025-03-26 à 2025-11-10), mais sans autres informations, cela ne permet pas d'exclure une fraude.",
+            "L'absence de nom du commerce et le manque d'informations sur le type de service rendu rendent impossible l'évaluation de la raisonnabilité du montant (300). Un montant de 300 peut être raisonnable pour certains services, mais exorbitant pour d'autres.  L'absence d'information sur la nature du service est un facteur majeur de suspicion."
+        ]
+    },
+    {
+        "nom_fichier": "02b445d2-f15e-4f93-af5a-71872945e753.jpeg",
+        "Nom du commerce": "Adopt",
+        "Date de la facture": "2025-10-28",
+        "Montant total": 75,
+        "Ville": "Casablanca",
+        "Adresse complète": "5 Bd Anfa, Casablanca",
+        "fraude": "Non",
+        "raison": [
+            "La date de la facture (2025-10-28) est comprise dans l'intervalle de la mission (2025-03-26 à 2025-11-10), avec une tolérance d'un jour.",
+            "La ville de la facture (Casablanca) correspond à la destination de la mission (casablanca).",
+            "Le montant de 75 est difficile à qualifier de raisonnable ou non sans plus d'informations sur la nature des services rendus par Adopt.  Il pourrait s'agir d'un montant faible pour une prestation significative ou d'un montant élevé pour une prestation mineure.  Une analyse plus approfondie est nécessaire pour juger de son caractère raisonnable."
+        ]
+    },
+    {
+        "nom_fichier": "67d05762-e448-415d-bcae-b2e9bde38849.jpeg",
+        "Nom du commerce": "inconnu",
+        "Date de la facture": "2025-07-25",
+        "Montant total": 499,
+        "Ville": "Casablanca",
+        "Adresse complète": "1 Rue de l'Europe, Casablanca",
+        "fraude": "Non",
+        "raison": [
+            "La date de la facture (2025-07-25) est comprise dans l'intervalle de la mission (2025-03-26 à 2025-11-10), avec une marge de tolérance.",
+            "La ville sur la facture (Casablanca) correspond à la destination de la mission (Casablanca).",
+            "Le montant de 499 est difficile à qualifier de raisonnable ou non sans connaître le type de commerce.  L'absence d'information sur le type de commerce empêche une évaluation précise.  Un montant de 499€ pourrait être raisonnable pour certains services, et exorbitant pour d'autres."
+        ]
+    },
+    {
+        "nom_fichier": "d4383417-b956-4cfa-9679-c2c64d012bd4.jpeg",
+        "Nom du commerce": "inconnu",
+        "Date de la facture": "2025-08-08",
+        "Montant total": 250,
+        "Ville": "Casablanca",
+        "Adresse complète": "10 Rue Massira, Casablanca",
+        "fraude": "Non",
+        "raison": [
+            "La date de la facture (2025-08-08) est comprise dans l'intervalle de la mission (2025-03-26 à 2025-11-10), avec une marge de tolérance d'un jour.",
+            "La ville sur la facture (Casablanca) correspond à la destination indiquée dans l'ordre de mission (Casablanca).",
+            "Le montant de 250 est difficile à qualifier de raisonnable ou non sans connaître le type de commerce.  L'absence d'information sur le type de commerce et la nature des prestations rend impossible une évaluation précise du montant.  Un montant de 250 pourrait être raisonnable pour certains services et excessivement bas pour d'autres."
+        ]
+    },
+    {
+        "nom_fichier": "faab9004-3716-4ccb-b51f-9f8532e2517b.jpeg",
+        "Nom du commerce": "Adopt",
+        "Date de la facture": "2025-07-05",
+        "Montant total": 1200,
+        "Ville": "Casablanca",
+        "Adresse complète": "Avenue Taddart, Casablanca",
+        "fraude": "Non",
+        "raison": [
+            "La date de la facture (2025-07-05) est bien comprise dans l'intervalle de la mission (2025-03-26 à 2025-11-10), avec une marge de tolérance d'un jour.",
+            "La ville de la facture (Casablanca) correspond exactement à la destination indiquée dans l'ordre de mission.",
+            "Le montant de 1200 est difficile à qualifier de raisonnable ou non sans plus de contexte.  Il faudrait connaître la nature des prestations facturées par Adopt pour juger de son adéquation.  L'absence d'information détaillée empêche une conclusion définitive sur ce point.  Une estimation ou une fourchette de prix pour ce type de service serait utile."
+        ]
+    }
+]
