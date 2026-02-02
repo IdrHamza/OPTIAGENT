@@ -21,7 +21,7 @@ graph LR
     A[React Frontend] <--> B[Spring Boot Backend]
     B <--> C[FastAPI + LangGraph]
     C <--> D[Gemini API]
-    B --> E[(MongoDB)] '''
+    B --> E[(MongoDB)] 
 ---
 
 ### 2. La partie "Intelligence Artificielle" (à coller juste après)
