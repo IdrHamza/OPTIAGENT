@@ -21,7 +21,7 @@ graph LR
     A[React Frontend] <--> B[Spring Boot Backend]
     B <--> C[FastAPI + LangGraph]
     C <--> D[Gemini API]
-    B --> E[(MongoDB)
+B --> E[(MongoDB)]
 
 graph TD
     Start((Début)) --> Input[Réception Image Facture + Ordre de Mission]
