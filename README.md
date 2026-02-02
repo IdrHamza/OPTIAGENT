@@ -23,10 +23,11 @@ graph LR
     C <--> D[Gemini API]
     B --> E[(MongoDB)]
 ---
+
+### 2. La partie "Intelligence Artificielle" (à coller juste après)
+Une fois que tu as fermé le bloc précédent, tu peux coller celui-ci :
+
 ```markdown
-
----
-
 ## 🧠 Intelligence Artificielle & Workflow Agentique
 
 Contrairement à un simple script OCR, ce projet utilise un **Agent intelligent orchestré par LangGraph** qui suit un cycle de décision logique pour valider chaque document :
