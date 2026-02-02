@@ -25,3 +25,27 @@ graph LR
 
 
     
+---
+
+## 🧠 Intelligence Artificielle & Workflow Agentique
+
+Contrairement à un simple script OCR, ce projet utilise un **Agent intelligent orchestré par LangGraph** qui suit un cycle de décision logique pour valider chaque document :
+
+```mermaid
+graph TD
+    Start((Début)) --> Input[Réception Image Facture + Ordre de Mission]
+    Input --> Node1[<b>Node: Extraction</b><br/>Gemini 1.5 Flash]
+    Node1 --> JSON{Format JSON Valide?}
+    
+    JSON -- Non --> Node1
+    JSON -- Oui --> Node2[<b>Node: Analyse de Conformité</b>]
+    
+    Node2 --> Check1{📍 Ville autorisée?}
+    Node2 --> Check2{📅 Dates valides?}
+    Node2 --> Check3{💰 Budget respecté?}
+    
+    Check1 & Check2 & Check3 --> Result[Génération Rapport Final]
+    Result --> End((Fin: Stockage MongoDB))
+    
+    style Node1 fill:#f9f,stroke:#333,stroke-width:2px
+    style Node2 fill:#bbf,stroke:#333,stroke-width:2px
