@@ -25,13 +25,6 @@ graph LR
 
 
     
----
-
-## 🧠 Intelligence Artificielle & Workflow Agentique
-
-Contrairement à un simple script OCR, ce projet utilise un **Agent intelligent orchestré par LangGraph** qui suit un cycle de décision logique pour valider chaque document :
-
-```mermaid
 graph TD
     Start((Début)) --> Input[Réception Image Facture + Ordre de Mission]
     Input --> Node1[<b>Node: Extraction</b><br/>Gemini 1.5 Flash]
