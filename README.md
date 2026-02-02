@@ -16,12 +16,17 @@ L'application repose sur une architecture multi-services pour séparer la logiqu
 * **Base de données** : **MongoDB** pour la flexibilité du stockage des documents (NoSQL).
 
 ### Diagramme de flux
+# Diagramme de flux du projet
+
+## 1️⃣ Architecture Frontend / Backend
+
 ```mermaid
 graph LR
     A[React Frontend] <--> B[Spring Boot Backend]
     B <--> C[FastAPI + LangGraph]
     C <--> D[Gemini API]
-B --> E[(MongoDB)]
+    B --> E[(MongoDB)]
+```mermaid
 
 graph TD
     Start((Début)) --> Input[Réception Image Facture + Ordre de Mission]
