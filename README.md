@@ -26,22 +26,3 @@ graph LR
     B <--> C[FastAPI + LangGraph]
     C <--> D[Gemini API]
     B --> E[(MongoDB)]
-🧠 Intelligence Artificielle & Workflow Agentique
-Contrairement à un simple script OCR, ce projet utilise un Agent intelligent orchestré par LangGraph qui suit un cycle de décision logique pour valider chaque document
-graph TD
-    Start((Début)) --> Input[Réception Image Facture + Ordre de Mission]
-    Input --> Node1[Node: Extraction<br/>Gemini 1.5 Flash]
-    Node1 --> JSON{Format JSON Valide?}
-    
-    JSON -- Non -->|Retry| Node1
-    JSON -- Oui --> Node2[Node: Analyse de Conformité]
-    
-    Node2 --> Check1{📍 Ville autorisée?}
-    Node2 --> Check2{📅 Dates valides?}
-    Node2 --> Check3{💰 Budget respecté?}
-    
-    Check1 & Check2 & Check3 --> Result[Génération Rapport Final]
-    Result --> End((Fin: Stockage MongoDB))
-    
-    style Node1 fill:#f9f,stroke:#333,stroke-width:2px
-    style Node2 fill:#bbf,stroke:#333,stroke-width:2px
