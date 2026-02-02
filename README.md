@@ -21,25 +21,15 @@ graph LR
     A[React Frontend] <--> B[Spring Boot Backend]
     B <--> C[FastAPI + LangGraph]
     C <--> D[Gemini API]
-    B --> E[(MongoDB)] 
----
+    B --> E[(MongoDB)
 
-### 2. La partie "Intelligence Artificielle" (à coller juste après)
-Une fois que tu as fermé le bloc précédent, tu peux coller celui-ci :
-
-```markdown
-## 🧠 Intelligence Artificielle & Workflow Agentique
-
-Contrairement à un simple script OCR, ce projet utilise un **Agent intelligent orchestré par LangGraph** qui suit un cycle de décision logique pour valider chaque document :
-
-```mermaid
 graph TD
     Start((Début)) --> Input[Réception Image Facture + Ordre de Mission]
-    Input --> Node1[<b>Node: Extraction</b><br/>Gemini 1.5 Flash]
+    Input --> Node1[Node: Extraction\nGemini 1.5 Flash]
     Node1 --> JSON{Format JSON Valide?}
     
     JSON -- Non --> Node1
-    JSON -- Oui --> Node2[<b>Node: Analyse de Conformité</b>]
+    JSON -- Oui --> Node2[Node: Analyse de Conformité]
     
     Node2 --> Check1{📍 Ville autorisée?}
     Node2 --> Check2{📅 Dates valides?}
